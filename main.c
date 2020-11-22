@@ -45,6 +45,7 @@ void tree_print(const bnode_t* p);
 void tree_free(bnode_t* p);
 menu_t menu_select(void);
 void tree_visual_print(const bnode_t* p, int level, int center);
+void null_visual_print(void);
 int num_form(int a);
 
 int main(void) {
@@ -160,7 +161,6 @@ bnode_t* tree_add(bnode_t* p, const member_t* x, int level_cnt) {
             max_level = level_cnt;
         }
     } else if ((cond = member_cmp_no(x, &p->data)) == 0) {
-        // move(row-4,0);
         clrtobot();
         printw("[error] %d is already allocated\n", x->no);
         refresh();
@@ -274,8 +274,6 @@ void tree_visual_print(const bnode_t* p, int level, int center) {
         mvprintw(level * 4 + 1, (center - NODE_WIDTH/2)+1, "%d%s", num_form(x->no), x->no > 99999 || x->no < -9999 ? ".." : "");
     }
     else if (p->left != NULL && p->right == NULL) {
-        // mvprintw(level * 4,     (col/2 - NODE_WIDTH/2),     "┌─────┐");
-        // mvprintw(level * 4 + 1, (col/2 - NODE_WIDTH/2),     "│     │");
         mvprintw(level * 4 + 2, (center - NODE_WIDTH/2),     "└──┬──┘");
         mvprintw(level * 4 + 3, (center - (1 << (max_level - level + 1))), "┌");
         for (int i=0; i<(1 << (max_level - level + 1)) - 1; i++) { printw("─"); }
@@ -284,8 +282,6 @@ void tree_visual_print(const bnode_t* p, int level, int center) {
         tree_visual_print(p->left, level+1, center - (1 << (max_level - level + 1)));
     }
     else if (p->left == NULL && p->right != NULL) {
-        // mvprintw(level * 4,     (col/2 - NODE_WIDTH/2),     "┌─────┐");
-        // mvprintw(level * 4 + 1, (col/2 - NODE_WIDTH/2),     "│     │");
         mvprintw(level * 4 + 2, (center - NODE_WIDTH/2),     "└──┬──┘");
         mvprintw(level * 4 + 3, center, "└");
         for (int i=0; i<(1 << (max_level - level + 1)) - 1; i++) { printw("─"); }
@@ -294,8 +290,6 @@ void tree_visual_print(const bnode_t* p, int level, int center) {
         tree_visual_print(p->right, level+1, center + (1 << (max_level - level + 1)));
     }
     else {
-        // mvprintw(level * 4,     (col/2 - NODE_WIDTH/2),     "┌─────┐");
-        // mvprintw(level * 4 + 1, (col/2 - NODE_WIDTH/2),     "│     │");
         mvprintw(level * 4 + 2, (center - NODE_WIDTH/2),     "└──┬──┘");
         mvprintw(level * 4 + 3, (center - (1 << (max_level - level + 1))), "┌");
         for (int i=0; i<(1 << (max_level - level + 2)) - 1; i++) { printw("─"); }
